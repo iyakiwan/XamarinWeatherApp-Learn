@@ -37,5 +37,34 @@ namespace WeatherApp.Data
 
             return weatherData;
         }
+
+        public async Task<List<WaetherList>> GetForecastData(string query)
+        {
+            ForecastData forecastData = null;
+            List<WaetherList> list = new List<WaetherList>();
+            try
+            {
+                var response = await _client.GetAsync(query);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
+                }
+
+                for(int i = 0; i < forecastData.List.Count; i++)
+                {
+                    if(i % 8 == 7)
+                    {
+                        list.Add(forecastData.List[i]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("\t\tERROR {0}", ex.Message);
+            }
+
+            return list;
+        }
     }
 }
