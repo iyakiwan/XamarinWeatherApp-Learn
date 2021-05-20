@@ -11,23 +11,37 @@ namespace WeatherApp.Data
 {
     public class RestService
     {
-        HttpClient _client;
+        HttpClient client;
 
         public RestService()
         {
-            _client = new HttpClient();
+            client = new HttpClient();
         }
 
-        public async Task<WeatherData> GetWeatherData(string query)
+        public async Task<EntitiyData> GetWeatherData(string query)
         {
-            WeatherData weatherData = null;
+            EntitiyData entitiyData = null;
             try
             {
-                var response = await _client.GetAsync(query);
+                var response = await client.GetAsync(query);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+                    WeatherData weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+
+                    entitiyData = new EntitiyData
+                    {
+                        Location = weatherData.Title,
+                        Country = weatherData.Sys.Country,
+                        DateTime = weatherData.Dt,
+                        Temp = weatherData.Main.Temperature,
+                        Icon = weatherData.Weather[0].Icon,
+                        Name = weatherData.Weather[0].Visibility,
+                        Desc = weatherData.Weather[0].Description,
+                        Humidity = weatherData.Main.Humidity,
+                        Pressure = weatherData.Main.Pressure,
+                        Wind = weatherData.Wind.Speed
+                    };
                 }
             }
             catch (Exception ex)
@@ -35,27 +49,41 @@ namespace WeatherApp.Data
                 Debug.WriteLine("\t\tERROR {0}", ex.Message);
             }
 
-            return weatherData;
+            return entitiyData;
         }
 
-        public async Task<List<WaetherList>> GetForecastData(string query)
+        public async Task<List<EntitiyData>> GetForecastData(string query)
         {
-            ForecastData forecastData = null;
-            List<WaetherList> list = new List<WaetherList>();
+            List<EntitiyData> list = null;
             try
             {
-                var response = await _client.GetAsync(query);
+                var response = await client.GetAsync(query);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
-                }
+                    ForecastData forecastData = JsonConvert.DeserializeObject<ForecastData>(content);
 
-                for(int i = 0; i < forecastData.List.Count; i++)
-                {
-                    if(i % 8 == 7)
+                    list = new List<EntitiyData>();
+
+                    for (int i = 0; i < forecastData.List.Count; i++)
                     {
-                        list.Add(forecastData.List[i]);
+                        if (i % 8 == 7)
+                        {
+                            EntitiyData entitiyData = new EntitiyData
+                            {
+                                Location = forecastData.City.Name,
+                                Country = forecastData.City.Country,
+                                DateTime = forecastData.List[i].Dt,
+                                Temp = forecastData.List[i].Main.Temp,
+                                Icon = forecastData.List[i].Weather[0].Icon,
+                                Name = forecastData.List[i].Weather[0].Main,
+                                Desc = forecastData.List[i].Weather[0].Description,
+                                Humidity = forecastData.List[i].Main.Humidity,
+                                Pressure = forecastData.List[i].Main.Pressure,
+                                Wind = forecastData.List[i].Wind.Speed
+                            };
+                            list.Add(entitiyData);
+                        }
                     }
                 }
             }

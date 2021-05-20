@@ -16,6 +16,8 @@ namespace WeatherApp.Model
         
         public string Icon { get; set; }
 
+        public string Name { get; set; }
+
         public string Desc { get; set; }
 
         public long Humidity { get; set; }

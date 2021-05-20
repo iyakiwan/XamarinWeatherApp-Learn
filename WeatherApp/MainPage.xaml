@@ -40,17 +40,15 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="Search by City" 
-                   Grid.ColumnSpan="3"
+            <Label Text="Search by Current" 
+                   Grid.ColumnSpan="2"
                    HorizontalOptions="Center"
                    TextColor="White" 
-                   FontAttributes="Bold" 
                    FontSize="Medium" />
 
             <Label Text="City:" 
                    Grid.Row="1" 
                    VerticalOptions="Center"
-                   Style="{StaticResource labelStyle}"
                    TextColor="#C0C0C0" />
 
             <Entry x:Name="_cityEntry"
@@ -70,6 +68,15 @@
                     BackgroundColor="DarkGray"
                     TextColor="White"
                     Clicked="OnGetWeatherButtonClicked" />
+
+            <Button Grid.Row="0" 
+                    Grid.Column="2"
+                    Text="Get Current" 
+                    BorderWidth="1"
+                    BorderColor="White"
+                    BackgroundColor="DarkGray"
+                    TextColor="White"
+                    Clicked="OnGetLocationButtonClicked" />
         </Grid>
 
 
@@ -88,17 +95,17 @@
                 <StackLayout Padding="10" Grid.Row="0" Grid.Column="0">
                     <Label Text="Location" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Title}" 
+                    <Label Text="{Binding Location}" 
                            Style="{StaticResource labelResultStyle}" />
 
                     <Label Text="Country" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Sys.Country}" 
+                    <Label Text="{Binding Country}" 
                            Style="{StaticResource labelResultStyle}" />
 
                     <Label Text="Visibility" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Weather[0].Visibility}" 
+                    <Label Text="{Binding Name}" 
                            Style="{StaticResource labelResultStyle}" />
 
                 </StackLayout>
@@ -106,35 +113,35 @@
                 <StackLayout Padding="10" Grid.Row="0" Grid.Column="1">
                     <Label Text="Temperature" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Main.Temperature}" 
+                    <Label Text="{Binding Temp, StringFormat='{0:N} ℃'}" 
                            Style="{StaticResource labelResultStyle}" />
 
                     <Label Text="Wind Speed" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Wind.Speed}" 
+                    <Label Text="{Binding Wind}" 
                            Style="{StaticResource labelResultStyle}" />
 
                     <Label Text="Humidity" 
                            Style="{StaticResource labelStyle}" />
-                    <Label Text="{Binding Main.Humidity}" 
+                    <Label Text="{Binding Humidity}" 
                            Style="{StaticResource labelResultStyle}" />
                 </StackLayout>
 
                 <StackLayout Padding="10" Grid.Row="1" Grid.ColumnSpan="2">
                     <Button x:Name="btnDetail" Text="Detail"/>
-                    <ActivityIndicator IsRunning="true" IsVisible="false" x:Name="loadingData" Grid.Row="1" Grid.ColumnSpan="2"/>                    <!--                    <ListView x:Name="listView" />
-                    -->
+                    <ActivityIndicator IsRunning="true" IsVisible="false" x:Name="loadingData" Grid.Row="1" Grid.ColumnSpan="2"/>
+                    
                     <ListView 
                         x:Name="listForecast"
                         HasUnevenRows="true"
                         ItemSelected="OnItemSelected">
-                        
+
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <ImageCell ImageSource="{Binding Weather[0].Icon, StringFormat='https://openweathermap.org/img/wn/{0:N}@2x.png'}" 
-                                           Text="{Binding Main.Temp, StringFormat='{0:N} ℃'}" 
-                                           Detail="{Binding Dt, Converter={StaticResource longToDateTimeConverter}}" />
-                                
+                                <ImageCell ImageSource="{Binding Icon, StringFormat='https://openweathermap.org/img/wn/{0:N}@2x.png'}" 
+                                           Text="{Binding Temp, StringFormat='{0:N} ℃'}" 
+                                           Detail="{Binding DateTime, Converter={StaticResource longToDateTimeConverter}}" />
+
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -151,11 +158,6 @@
                            Style="{StaticResource labelResultStyle}" />
                         -->
                 </StackLayout>
-
-                <!--
-            
-                            
-                -->
             </Grid>
         </ScrollView>
     </StackLayout>

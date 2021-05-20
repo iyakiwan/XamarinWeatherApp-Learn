@@ -13,21 +13,11 @@ namespace WeatherApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DetailPage : ContentPage
     {
-        public DetailPage(WeatherData data)
-        {
-            InitializeComponent();
-            BindingContext = data;
-        }
-
         public DetailPage(EntitiyData data)
         {
             InitializeComponent();
-            BindingContext = data;
-        }
 
-        public DetailPage(WaetherList data)
-        {
-            InitializeComponent();
+            Title = $"Weather in {data.Location}, {data.Country}";
             BindingContext = data;
         }
     }

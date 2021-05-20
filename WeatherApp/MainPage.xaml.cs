@@ -6,38 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using WeatherApp.Data;
 using WeatherApp.Model;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WeatherApp
 {
     public partial class MainPage : ContentPage
     {
-        RestService _restService;
-        public WeatherData data = null;
+        RestService restService;
+        public EntitiyData data = null;
+        public string lt, lg;
         public IList<WaetherList> WeatherList { get; private set; }
 
         public MainPage()
         {
             InitializeComponent();
-            _restService = new RestService();
-            data = new WeatherData();
-            //List<string> items = new List<string> { "First", "Second", "Third", "First", "Second", "Third", "First", "Second", "Third", "First", "Second", "Third" };
-            //listView.ItemsSource = items;
+
+            Title = "Weather App";
+
+            restService = new RestService();
             btnDetail.Clicked += async (sender, e) =>
             {
                 if (data != null)
                 {
-                    EntitiyData entitiyData = new EntitiyData();
-                    entitiyData.Location = data.Title;
-                    entitiyData.Country = data.Sys.Country;
-                    entitiyData.DateTime = data.Dt;
-                    entitiyData.Icon = data.Weather[0].Icon;
-                    entitiyData.Temp = data.Main.Temperature;
-                    entitiyData.Desc = data.Weather[0].Description;
-                    entitiyData.Humidity = data.Main.Humidity;
-                    entitiyData.Pressure = data.Main.Pressure;
-                    entitiyData.Wind = data.Wind.Speed;
-
                     await Navigation.PushAsync(new DetailPage(data));
                 }
                 else
@@ -53,21 +44,62 @@ namespace WeatherApp
             if (!string.IsNullOrWhiteSpace(_cityEntry.Text))
             {
                 loadingData.IsVisible = true;
-                WeatherData weatherData = await _restService.GetWeatherData(GenerateRequestUri(Constants.Endpoint, "/weather"));
+                EntitiyData entitiyData = await restService.GetWeatherData(GenerateRequestUri(Constants.Endpoint, "/weather"));
 
-                data = weatherData;
+                data = entitiyData;
 
                 BindingContext = data;
 
-                listForecast.ItemsSource = await _restService.GetForecastData(GenerateRequestUri(Constants.Endpoint, "/forecast"));
+                listForecast.ItemsSource = await restService.GetForecastData(GenerateRequestUri(Constants.Endpoint, "/forecast"));
                 loadingData.IsVisible = false;
                 Console.WriteLine("DEBUG - Button Clicked!");
             }
         }
 
+        async void OnGetLocationButtonClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                var location = await Geolocation.GetLocationAsync(request);
+                if (location != null)
+                {
+                    lt = location.Latitude.ToString();
+                    lg = location.Longitude.ToString();
+                    //await DisplayAlert("Keterangan",$"Latitude: {location.Latitude}, Longitude: { location.Longitude}, Altitude: { location.Altitude}","OK");
+
+                    loadingData.IsVisible = true;
+                    EntitiyData entitiyData = await restService.GetWeatherData(GenerateRequestLatLon(Constants.Endpoint, "/weather", lt, lg));
+
+                    data = entitiyData;
+
+                    BindingContext = data;
+
+                    listForecast.ItemsSource = await restService.GetForecastData(GenerateRequestLatLon(Constants.Endpoint, "/forecast", lt, lg));
+                    loadingData.IsVisible = false;
+                }
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                await DisplayAlert("Error", fnsEx.Message, "OK");
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                await DisplayAlert("Error", fneEx.Message, "OK");
+            }
+            catch (PermissionException pEx)
+            {
+                await DisplayAlert("Error", pEx.Message, "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            WaetherList item = (WaetherList)e.SelectedItem;
+            EntitiyData item = (EntitiyData)e.SelectedItem;
             await Navigation.PushAsync(new DetailPage(item));
         }
 
@@ -76,8 +108,19 @@ namespace WeatherApp
             string requestUri = endpoint;
             requestUri += path;
             requestUri += $"?q={_cityEntry.Text}";
-            requestUri += "&units=metric"; // or units=metric
+            requestUri += "&units=metric";
             requestUri += $"&APPID={Constants.APIKey}";
+            return requestUri;
+        }
+
+        string GenerateRequestLatLon(string endpoint, string path, string lat, string lon)
+        {
+            string requestUri = endpoint;
+            requestUri += path;
+            requestUri += $"?lat={lat}";
+            requestUri += $"&lon={lon}";
+            requestUri += "&units=metric";
+            requestUri += $"&appid={Constants.APIKey}";
             return requestUri;
         }
     }

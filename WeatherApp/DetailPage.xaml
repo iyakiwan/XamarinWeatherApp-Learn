@@ -31,43 +31,52 @@
             <StackLayout Padding="10">
                 <Label Text="Location" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Title}" 
+                <Label Text="{Binding Location}" 
                        Style="{StaticResource labelResultStyle}" />
 
                 <Label Text="Country" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Sys.Country}" 
+                <Label Text="{Binding Country}" 
+                       Style="{StaticResource labelResultStyle}" />
+
+                <Label Text="DateTime" 
+                       Style="{StaticResource labelStyle}" />
+                <Label Text="{Binding DateTime, Converter={StaticResource longToDateTimeConverter}}" 
                        Style="{StaticResource labelResultStyle}" />
 
                 <Label Text="Visibility" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Weather[0].Visibility}" 
+                <Label Text="{Binding Name}" 
                        Style="{StaticResource labelResultStyle}" />
 
                 <Label Text="Temperature" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Main.Temperature}" 
+                <Label Text="{Binding Temp, StringFormat='{0:N} ℃'}" 
+                       Style="{StaticResource labelResultStyle}" />
+
+                <Label Text="Descripsi" 
+                       Style="{StaticResource labelStyle}" />
+                <Label Text="{Binding Desc}" 
                        Style="{StaticResource labelResultStyle}" />
 
                 <Label Text="Wind Speed" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Wind.Speed}" 
+                <Label Text="{Binding Wind}" 
                        Style="{StaticResource labelResultStyle}" />
 
                 <Label Text="Humidity" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Main.Humidity}" 
+                <Label Text="{Binding Humidity}" 
                        Style="{StaticResource labelResultStyle}" />
 
-                <Label Text="Time of Sunrise" 
+                <Label Text="Pressure" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Sys.Sunrise, Converter={StaticResource longToDateTimeConverter}}" 
+                <Label Text="{Binding Pressure}" 
                        Style="{StaticResource labelResultStyle}" />
 
-                <Label Text="Time of Sunset" 
+                <Label Text="Image" 
                        Style="{StaticResource labelStyle}" />
-                <Label Text="{Binding Sys.Sunset, Converter={StaticResource longToDateTimeConverter}}" 
-                       Style="{StaticResource labelResultStyle}" />
+                <Image Source="{Binding Icon, StringFormat='https://openweathermap.org/img/wn/{0:N}@4x.png'}" />
 
             </StackLayout>
         </ScrollView>

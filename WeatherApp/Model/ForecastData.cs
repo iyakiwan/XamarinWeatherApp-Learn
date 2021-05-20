@@ -95,7 +95,7 @@ namespace WeatherApp.Model
     public class Rain
     {
         [JsonProperty("3h")]
-        public double _3h { get; set; }
+        public double T3h { get; set; }
     }
 
     public class WaetherList
