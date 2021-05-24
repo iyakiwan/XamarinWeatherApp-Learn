@@ -123,5 +123,10 @@ namespace WeatherApp
             requestUri += $"&appid={Constants.APIKey}";
             return requestUri;
         }
+
+        void SendNotification(object sender, EventArgs e)
+        {
+            DependencyService.Get<INotification>().CreateNotification("SPTutorials", "Uyy");
+        }
     }
 }

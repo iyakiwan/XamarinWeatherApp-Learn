@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "946168272912",
+    "project_id": "xamarin-weather-app",
+    "storage_bucket": "xamarin-weather-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946168272912:android:7fb3cbf4c0d5f58dba5295",
+        "android_client_info": {
+          "package_name": "id.bts.learning.weatherapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946168272912-dasgf56io35eq68vtvo4ju6jufn82d8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6p-ChvaCoLC-EfmPb34ZzMwKuMNRhRcg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946168272912-dasgf56io35eq68vtvo4ju6jufn82d8a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

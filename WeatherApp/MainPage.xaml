@@ -40,8 +40,9 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="Search by Current" 
-                   Grid.ColumnSpan="2"
+            <Label Text="Search &#10; by Current" 
+                   Grid.Row="0" 
+                   Grid.Column="0"
                    HorizontalOptions="Center"
                    TextColor="White" 
                    FontSize="Medium" />
@@ -70,13 +71,22 @@
                     Clicked="OnGetWeatherButtonClicked" />
 
             <Button Grid.Row="0" 
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Text="Get Current" 
                     BorderWidth="1"
                     BorderColor="White"
                     BackgroundColor="DarkGray"
                     TextColor="White"
                     Clicked="OnGetLocationButtonClicked" />
+
+            <Button Grid.Row="0" 
+                    Grid.Column="2"
+                    Text="Send Notif" 
+                    BorderWidth="1"
+                    BorderColor="White"
+                    BackgroundColor="DarkGray"
+                    TextColor="White"
+                    Clicked="SendNotification" />
         </Grid>
 
 
