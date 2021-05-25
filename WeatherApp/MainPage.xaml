@@ -40,12 +40,11 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="Search &#10; by Current" 
+            <Label Text="Current" 
                    Grid.Row="0" 
                    Grid.Column="0"
                    HorizontalOptions="Center"
-                   TextColor="White" 
-                   FontSize="Medium" />
+                   TextColor="White" />
 
             <Label Text="City:" 
                    Grid.Row="1" 

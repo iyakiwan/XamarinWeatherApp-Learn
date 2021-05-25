@@ -6,6 +6,6 @@ namespace WeatherApp
 {
     public interface INotification
     {
-        void CreateNotification(String title, String message);
+        void CreateNotification(String title, String message, String[] data);
     }
 }

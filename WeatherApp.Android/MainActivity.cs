@@ -4,6 +4,9 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Firebase.Iid;
+using Android.Util;
+using Android.Content;
 
 namespace WeatherApp.Droid
 {
@@ -14,9 +17,23 @@ namespace WeatherApp.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            Log.Debug("TOKEN", "Instance ID TOken: " + FirebaseInstanceId.Instance.Token);
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+
+            var myIntent = Intent;
+            if (myIntent.GetStringArrayExtra("DataWeather") != null)
+            {
+                string[] data = myIntent.GetStringArrayExtra("DataWeather");
+                Log.Debug("HAIIIB", data[0]);
+                LoadApplication(new App(myIntent.GetStringArrayExtra("DataWeather")));
+            }
+            else
+            {
+                LoadApplication(new App());
+            }
+            
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

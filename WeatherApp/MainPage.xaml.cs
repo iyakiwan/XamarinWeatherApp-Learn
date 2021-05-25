@@ -126,7 +126,7 @@ namespace WeatherApp
 
         void SendNotification(object sender, EventArgs e)
         {
-            DependencyService.Get<INotification>().CreateNotification("SPTutorials", "Uyy");
+            DependencyService.Get<INotification>().CreateNotification("SPTutorials", "Uyy", null);
         }
     }
 }

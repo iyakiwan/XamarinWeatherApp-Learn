@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.App;
@@ -27,13 +28,18 @@ namespace WeatherApp.Droid
         {
             mContext = global::Android.App.Application.Context;
         }
-        public void CreateNotification(String title, String message)
+        public void CreateNotification(String title, String message, String[] data = null)
         {
             try
             {
                 var intent = new Intent(mContext, typeof(MainActivity));
                 intent.AddFlags(ActivityFlags.ClearTop);
-                intent.PutExtra(title, message);
+                //intent.PutExtra(title, message);
+                if(data != null)
+                {
+                    Log.Debug("HAIIIA", data[0]);
+                    intent.PutExtra("DataWeather", data);
+                }
                 var pendingIntent = PendingIntent.GetActivity(mContext, 0, intent, PendingIntentFlags.OneShot);
 
                 var sound = global::Android.Net.Uri.Parse(ContentResolver.SchemeAndroidResource + "://" + mContext.PackageName + "/" + Resource.Raw.notification);
